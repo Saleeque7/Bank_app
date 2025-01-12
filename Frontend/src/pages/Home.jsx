@@ -1,5 +1,6 @@
 import React from "react";
 import image from "../assets/image.jpg";
+import {Link} from 'react-router-dom'
 
 const HomePage = () => {
   return (
@@ -21,12 +22,12 @@ const HomePage = () => {
               Trusted by millions for secure and reliable banking services. Join
               us today and experience banking the classic way.
             </p>
-            <a
+            <Link
               href="#create-account"
               className="bg-white text-blue-600 px-6 py-3 text-lg rounded-full font-semibold transition duration-300 hover:bg-blue-100"
             >
               Create Account
-            </a>
+            </Link>
           </div>
         </div>
       </div>

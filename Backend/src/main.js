@@ -6,6 +6,7 @@ const start = async() =>{
         await connectDb()
     } catch (error) {
         console.error("error in start server", error);
+        process.exit(1);
     }
     app.listen(config.PORT ,()=>{
         console.log(`sever running on http://localhost:${config.PORT}`);
