@@ -1,26 +1,36 @@
 import pool from "../config/connectDb.js";
 export const userRepo = {
     createUserRepo: async (AccountNumber, name, IntroducerID) => {
-        let BeneficiaryID ;
+        let BeneficiaryID;
         let BeneficiaryAccount = null;
-     
+
         try {
+
+            const existingAccount = await pool.query(
+                'SELECT 1 FROM users WHERE AccountNumber = $1',
+                [AccountNumber]
+            );
+
+            if (existingAccount.rows.length > 0) {
+                return { success: false, message: "Account number already exists." };
+            }
+
             if (!IntroducerID) {
                 IntroducerID = null;
                 BeneficiaryID = null;
-            } 
+            }
 
             const result = await pool.query(
                 'INSERT INTO users (AccountNumber, UserName) VALUES ($1, $2) RETURNING *',
                 [AccountNumber, name]
             );
             const OwnerID = result.rows[0].ownerid
-            if(IntroducerID){
+            if (IntroducerID) {
                 const introducerAccounts = await pool.query(
                     'SELECT COUNT(*) AS totalAccounts FROM accounts WHERE IntroducerID = $1',
                     [IntroducerID]
                 );
-             
+
                 const totalAccounts = parseInt(introducerAccounts.rows[0].totalaccounts) + 1;
                 if (totalAccounts % 2 === 1) {
                     BeneficiaryID = IntroducerID;
@@ -45,8 +55,8 @@ export const userRepo = {
                             : null;
                 }
             }
-            
-            
+
+
             await pool.query(
                 'INSERT INTO accounts (IntroducerID, BeneficiaryID, AccountID) VALUES ($1, $2, $3)',
                 [IntroducerID, BeneficiaryID, OwnerID]
@@ -60,12 +70,13 @@ export const userRepo = {
             }
 
             return {
-                result,
+                success: true,
+                OwnerID,
                 message: "User created "
             };
         } catch (error) {
-            console.error('Error creating user:', error);
-            throw error;
+            console.error("Error in create user :", error.message);
+            return { success: false, message: error.message }
         }
     },
 };

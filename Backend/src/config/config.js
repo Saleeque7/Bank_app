@@ -6,5 +6,6 @@ export const config = {
     PSQL_USER:process.env.PSQL_USER,
     PSQL_DATABASE:process.env.PSQL_DATABASE,
     PSQL_PASSWORD:process.env.PSQL_PASSWORD,
-    PORT:process.env.PORT
+    PORT:process.env.PORT,
+    CORS_ORIGIN_API:process.env.CORS_ORIGIN_API,
 }
