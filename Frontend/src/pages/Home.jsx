@@ -23,7 +23,7 @@ const HomePage = () => {
               us today and experience banking the classic way.
             </p>
             <Link
-              href="#create-account"
+              to={'/create-Account'}
               className="bg-white text-blue-600 px-6 py-3 text-lg rounded-full font-semibold transition duration-300 hover:bg-blue-100"
             >
               Create Account
